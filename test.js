@@ -60,9 +60,6 @@ async function main() {
   results.push(await runTest("Search: Lyrics (Genius)", async () => {
     try {
         const res = await api.search.lyrics("Rema fun");
-        console.log("\n📦 DATA RECEIVED:");
-        console.log(JSON.stringify(res, null, 2));
-        console.log("-----------------------------------");
         return res.status && res.lyrics.length > 0;
     } catch (e) {
         console.log(`   (⚠️ Lyrics Error: ${e.message})`);
