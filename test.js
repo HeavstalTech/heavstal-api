@@ -50,7 +50,7 @@ async function main() {
   results.push(await runTest("Tools: Unzip Engine", async () => {
     try {
         // A small repo zip link
-        const res = await api.tools.unzip("https://github.com/octocat/Hello-World/archive/refs/heads/master.zip");
+        const res = await api.tools.unzip("https://files.catbox.moe/vuc1j3.zip");
         return Buffer.isBuffer(res.buffer) && res.buffer.toString().includes("FILE: Hello-World-master/README");
     } catch (e) {
         return false;
