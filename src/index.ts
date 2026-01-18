@@ -55,6 +55,7 @@ export const tools = {
   ssweb,
   remini,
   unzipToText,
+  unzip: unzipToText,
   styleText,
   morse,
   tts,
