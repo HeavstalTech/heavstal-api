@@ -47,6 +47,16 @@ async function main() {
     }
   }));
 
+  results.push(await runTest("Tools: Unzip Engine", async () => {
+    try {
+        // A small repo zip link
+        const res = await api.tools.unzip("https://github.com/octocat/Hello-World/archive/refs/heads/master.zip");
+        return Buffer.isBuffer(res.buffer) && res.buffer.toString().includes("FILE: Hello-World-master/README");
+    } catch (e) {
+        return false;
+    }
+  }));
+
   results.push(await runTest("Search: Lyrics (Genius)", async () => {
     try {
         const res = await api.search.lyrics("Rema fun");
