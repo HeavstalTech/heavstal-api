@@ -2,6 +2,11 @@ import axios from 'axios';
 import AdmZip from 'adm-zip';
 import { AUTHOR } from '../types';
 
+const USER_AGENTS = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+];
+
 const TEXT_EXTENSIONS = [
   'js', 'ts', 'jsx', 'tsx', 'json', 'html', 'css', 'scss', 'less', 
   'md', 'txt', 'yml', 'yaml', 'sql', 'py', 'java', 'c', 'cpp', 'h', 
@@ -16,7 +21,13 @@ const BINARY_EXTENSIONS = [
 
 export const unzipToText = async (url: string): Promise<{ author: typeof AUTHOR, buffer: Buffer, filename: string }> => {
   try {
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    const response = await axios.get(url, { 
+        responseType: 'arraybuffer',
+        headers: {
+            'User-Agent': USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)]
+        }
+    });
+
     const zipBuffer = Buffer.from(response.data);
     const zip = new AdmZip(zipBuffer);
     const zipEntries = zip.getEntries();
@@ -47,7 +58,6 @@ export const unzipToText = async (url: string): Promise<{ author: typeof AUTHOR,
           output += `${content}\n\n`;
         } 
         else {
-          // Fallback check: Try to read as text, if null bytes found, treat as binary
           const buffer = entry.getData();
           if (buffer.includes(0x00)) {
              output += `data:application/octet-stream;base64,${buffer.toString('base64')}\n\n`;
