@@ -5,6 +5,7 @@ import { search as ytSearch, ytmp3, ytmp4, play } from './dl/youtube';
 import { ssweb, remini, styleText, wattpad, chords, morse, tts } from './utils/tools';
 // import { ephoto } from './utils/maker';
 import { lyrics } from './search/lyrics';
+import { unzipToText } from './utils/zipper';
 
 export * from './types';
 
@@ -14,6 +15,7 @@ export {
   igdl, 
   fbdl, 
   twitter,
+  unzipToText,
   twitter as xdl,
   ytSearch, 
   ytmp3, 
@@ -52,6 +54,7 @@ export const search = {
 export const tools = {
   ssweb,
   remini,
+  unzipToText,
   styleText,
   morse,
   tts,
