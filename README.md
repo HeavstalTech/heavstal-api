@@ -6,7 +6,7 @@
 ![Build Status](https://img.shields.io/github/actions/workflow/status/HeavstalTech/heavstaltech-api/test.yml?style=flat-square&label=tests)
 ![License](https://img.shields.io/npm/l/@heavstaltech/api?style=flat-square)
 
-A powerful, all-in-one scraping and utility library built by **HEAVSTAL TECH**. 
+A Lightweight, powerful, all-in-one scraping and utility library built by **HEAVSTAL TECH**. 
 This module provides easy access to media downloaders (TikTok, YouTube, Instagram, Facebook), search engines, and AI tools.
 
 It is designed to work seamlessly in both **CommonJS (`require`)** and **ES Modules (`import`)** environments.
