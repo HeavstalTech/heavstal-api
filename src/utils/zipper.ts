@@ -11,15 +11,21 @@ const TEXT_EXTENSIONS = [
   'js', 'ts', 'jsx', 'tsx', 'json', 'html', 'css', 'scss', 'less', 
   'md', 'txt', 'yml', 'yaml', 'sql', 'py', 'java', 'c', 'cpp', 'h', 
   'cs', 'php', 'rb', 'go', 'rs', 'swift', 'kt', 'xml', 'svg', 'env', 
-  'gitignore', 'dockerfile', 'sh', 'bat', 'conf', 'ini', 'properties'
+  'gitignore', 'dockerfile', 'sh', 'bat', 'conf', 'ini', 'properties',
+  'toml', 'prisma', 'lock', 'package'
 ];
 
 const BINARY_EXTENSIONS = [
   'png', 'jpg', 'jpeg', 'gif', 'webp', 'ico', 'bmp', 'tiff', 
-  'mp3', 'wav', 'ogg', 'mp4', 'webm', 'mov', 'mkv', 'zip', 'tar', 'gz', '7z', 'rar'
+  'mp3', 'wav', 'ogg', 'mp4', 'webm', 'mov', 'mkv', 'zip', 'tar', 'gz', '7z', 'rar',
+  'pdf', 'docx', 'doc', 'xlsx', 'pptx', 'exe', 'bin', 'dll', 'so', 'dylib'
 ];
 
-export const unzipToText = async (url: string): Promise<{ author: typeof AUTHOR, buffer: Buffer, filename: string }> => {
+export interface UnzipOptions {
+  includeBinary?: boolean;
+}
+
+export const unzipToText = async (url: string, options: UnzipOptions = { includeBinary: false }): Promise<{ author: typeof AUTHOR, buffer: Buffer, filename: string }> => {
   try {
     const response = await axios.get(url, { 
         responseType: 'arraybuffer',
@@ -32,7 +38,8 @@ export const unzipToText = async (url: string): Promise<{ author: typeof AUTHOR,
     const zip = new AdmZip(zipBuffer);
     const zipEntries = zip.getEntries();
 
-    let output = `EXTRACTED BY HEAVSTAL TECH\nSOURCE: ${url}\nDATE: ${new Date().toISOString()}\n\n`;
+    let output = `EXTRACTED BY HEAVSTAL TECH\nSOURCE: ${url}\nDATE: ${new Date().toISOString()}\n`;
+    output += `OPTIONS: Include Binary = ${options.includeBinary}\n\n`;
 
     for (const entry of zipEntries) {
       if (entry.isDirectory) continue;
@@ -45,13 +52,19 @@ export const unzipToText = async (url: string): Promise<{ author: typeof AUTHOR,
       output += `================================================================================\n`;
 
       try {
-        if (ext === 'pdf') {
-          output += `[File contents not extracted - PDF Document]\n\n`;
-        } 
-        else if (BINARY_EXTENSIONS.includes(ext)) {
-          const b64 = entry.getData().toString('base64');
-          const mime = ext === 'mp3' ? 'audio/mpeg' : `image/${ext}`;
-          output += `data:${mime};base64,${b64}\n\n`;
+        if (BINARY_EXTENSIONS.includes(ext)) {
+          if (options.includeBinary) {
+             const b64 = entry.getData().toString('base64');
+             const mime = ext === 'mp3' ? 'audio/mpeg' : `image/${ext}`;
+             
+             if (['pdf', 'docx', 'doc', 'xlsx', 'pptx'].includes(ext)) {
+                 output += `data:application/octet-stream;base64,${b64}\n\n`;
+             } else {
+                 output += `data:${mime};base64,${b64}\n\n`;
+             }
+          } else {
+             output += `[Binary File Skipped] (Type: ${ext}, Size: ${entry.header.size} bytes)\n\n`;
+          }
         } 
         else if (TEXT_EXTENSIONS.includes(ext) || !ext) {
           const content = entry.getData().toString('utf8');
@@ -60,7 +73,11 @@ export const unzipToText = async (url: string): Promise<{ author: typeof AUTHOR,
         else {
           const buffer = entry.getData();
           if (buffer.includes(0x00)) {
-             output += `data:application/octet-stream;base64,${buffer.toString('base64')}\n\n`;
+             if (options.includeBinary) {
+                output += `data:application/octet-stream;base64,${buffer.toString('base64')}\n\n`;
+             } else {
+                output += `[Unknown Binary File Skipped]\n\n`;
+             }
           } else {
              output += `${buffer.toString('utf8')}\n\n`;
           }
