@@ -93,3 +93,16 @@ export interface LyricsResult {
   url: string;
   lyrics: string;
 }
+
+export interface ApkResult {
+  author: Author;
+  status: boolean;
+  name: string;
+  package_id: string;
+  version: string;
+  downloads: number;
+  size: string; 
+  icon: string;
+  dl_url: string;
+  last_updated?: string;
+}
