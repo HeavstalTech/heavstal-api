@@ -6,6 +6,7 @@ import { ssweb, remini, styleText, wattpad, chords, morse, tts } from './utils/t
 // import { ephoto } from './utils/maker';
 import { lyrics } from './search/lyrics';
 import { unzipToText } from './utils/zipper';
+import { apk } from './search/apk'; 
 
 export * from './types';
 
@@ -14,6 +15,7 @@ export {
   tiktokSlide, 
   igdl, 
   fbdl, 
+  apk,
   twitter,
   unzipToText,
   twitter as xdl,
@@ -48,7 +50,8 @@ export const search = {
   youtube: ytSearch,
   wattpad,
   chords,
-  lyrics
+  lyrics,
+  apk
 };
 
 export const tools = {
