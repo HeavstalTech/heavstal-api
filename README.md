@@ -269,19 +269,24 @@ console.log(`Artist: ${song.artist}`);
 console.log(`Lyrics:\n${song.lyrics}`);
 ```
 
-#### Zip to Text Extractor (LLM Context)
-Download a remote ZIP file (like a GitHub repo), extract all files recursively, and compile them into a single text buffer. Perfect for feeding codebases to AI & others.
+#### Zip to Text Extractor
+Download a remote ZIP file, extract recursively, and compile to a single text buffer.
 
 ```javascript
 import { tools } from '@heavstaltech/api';
 import fs from 'fs';
 
-// 1. Extract from URL
-const { buffer, filename } = await tools.unzip("https://github.com/octocat/Hello-World/archive/master.zip");
+// Option 1: Text Only (Best for LLMs - Skips Images/PDFs)
+const result = await tools.unzip("https://github.com/user/repo/archive/main.zip", { 
+  includeBinary: false 
+});
 
-// 2. Save to file
-fs.writeFileSync(filename, buffer);
-console.log("Extraction complete!");
+// Option 2: Include Everything (Base64 encoded binary files)
+const fullBackup = await tools.unzip("https://github.com/user/repo/archive/main.zip", { 
+  includeBinary: true 
+});
+
+fs.writeFileSync(result.filename, result.buffer);
 ```
 
 ---
