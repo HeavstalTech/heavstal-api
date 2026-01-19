@@ -289,6 +289,20 @@ const fullBackup = await tools.unzip("https://github.com/user/repo/archive/main.
 fs.writeFileSync(result.filename, result.buffer);
 ```
 
+#### APK Downloader (Android)
+Search for Android apps and get direct high-speed download links along with version metadata.
+
+```javascript
+import { search } from '@heavstaltech/api';
+
+const app = await search.apk("WhatsApp");
+
+console.log(`Name: ${app.name}`);
+console.log(`Version: ${app.version}`);
+console.log(`Size: ${app.size}`);
+console.log(`Download Link: ${app.dl_url}`);
+```
+
 ---
 
 ## 📝 License
