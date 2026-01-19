@@ -47,41 +47,17 @@ async function main() {
     }
   }));
 
-  results.push(await runTest("Tools: Unzip Engine", async () => {
+  results.push(await runTest("Tools: Unzip (Binary Skipped)", async () => {
     try {
-        console.log("\n   [Debug] Downloading Zip...");
-        // Using a tiny, stable repo to test
         const url = "https://github.com/octocat/Hello-World/archive/refs/heads/master.zip";
-        const res = await api.tools.unzip(url);
+        const res = await api.tools.unzip(url, { includeBinary: false });
         
-        // Debugging the output
-        console.log(`   [Debug] Buffer Type: ${typeof res.buffer}`);
-        console.log(`   [Debug] Buffer Length: ${res.buffer?.length}`);
+        const content = res.buffer.toString();
+        const hasHeader = content.includes("EXTRACTED BY HEAVSTAL TECH");
+        const noBase64 = !content.includes("data:image/");
         
-        if (!Buffer.isBuffer(res.buffer)) {
-            console.log("   [Error] Result is not a buffer");
-            return false;
-        }
-
-        const textContent = res.buffer.toString('utf-8');
-        
-        // Only print first 100 chars to check header
-        console.log(`   [Debug] Preview: ${textContent.substring(0, 100).replace(/\n/g, ' ')}...`);
-
-        // Less strict check: just look for our signature header
-        const isValid = textContent.includes("EXTRACTED BY HEAVSTAL TECH");
-        
-        if (!isValid) console.log("   [Error] Header signature missing from output.");
-        
-        return isValid;
-
+        return hasHeader && noBase64;
     } catch (e) {
-        console.log(`\n   [CRITICAL ERROR]`);
-        console.log(`   Message: ${e.message}`);
-        if (e.response) {
-            console.log(`   Status: ${e.response.status}`);
-            console.log(`   Headers: ${JSON.stringify(e.response.headers)}`);
-        }
         return false;
     }
   }));
