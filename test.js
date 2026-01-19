@@ -47,6 +47,16 @@ async function main() {
     }
   }));
 
+  results.push(await runTest("Search: APK", async () => {
+    try {
+        const res = await api.search.apk("WhatsApp");
+        return res.status && res.package_id.includes("whatsapp") && res.dl_url.startsWith("http");
+    } catch (e) {
+        return false;
+    }
+  }));
+  
+
   results.push(await runTest("Tools: Unzip (Binary Skipped)", async () => {
     try {
         const url = "https://github.com/octocat/Hello-World/archive/refs/heads/master.zip";
