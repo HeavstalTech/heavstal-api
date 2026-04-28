@@ -5,7 +5,8 @@
 import ytdl from '@distube/ytdl-core';
 import yts from 'yt-search';
 import crypto from 'crypto';
-import { AUTHOR, YouTubeResult, YouTubeSearchResult } from '../types';
+import { AUTHOR, YouTubeResult, HeavstalConfig, YouTubeSearchResult } from '../types'
+import { verifyApiKey } from '../../auth'
 
 var BASE = "https://embed.dlsrv.online";
 var FP = "edacb371e53d99bcdf84a2d97381139625d3d2cef69f912ba296e78247233c68";
@@ -118,8 +119,9 @@ async function runDeepFallback(url: string, type: "mp3" | "mp4", videoId: string
   };
 }
 
-export const search = async (query: string): Promise<YouTubeSearchResult[]> => {
+export const search = async (query: string, config?: HeavstalConfig): Promise<YouTubeSearchResult[]> => {
   try {
+    await verifyApiKey(config?.apiKey)
     const result = await yts(query);
     if (!result.all || result.all.length === 0) throw new Error("No results found on YouTube.");
     
