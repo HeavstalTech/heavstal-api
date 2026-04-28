@@ -19,7 +19,7 @@ This package is part of the **Heavstal Tech** ecosystem.
 
 **Explore More APIs:**  
 Visit our official API Hub to discover more tools, endpoints, and detailed documentation:  
-👉 **[https://heavstal-tech.vercel.app/apis](https://heavstal-tech.vercel.app/apis)**
+👉 **[https://heavstal.com.ng/apis](https://heavstal.com.ng/apis)**
 
 ---
 
@@ -312,6 +312,6 @@ This project is licensed under the **MIT License**.
 ---
 
 <div align="center">
-  <p>Maintained by <a href="https://heavstal-tech.vercel.app">HEAVSTAL TECH</a></p>
+  <p>Maintained by <a href="https://heavstal.com.ng">HEAVSTAL TECH</a></p>
   <p><i>Building Tomorrow's Web, Today.</i></p>
 </div>

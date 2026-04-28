@@ -5,7 +5,7 @@ export interface Author {
 
 export const AUTHOR: Author = {
   name: "HEAVSTAL TECH",
-  source: "https://heavstal-tech.vercel.app"
+  source: "https://heavstal.com.ng"
 };
 
 export interface TikTokResult {
