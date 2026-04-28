@@ -1,3 +1,13 @@
+import { version } from '../package.json';
+const majorVersion = parseInt(version.split('.')[0], 10);
+if (majorVersion < 2) {
+  console.error(`\x1b[33mnpm WARN deprecated\x1b[0m @heavstaltech/api@${version}`);
+  console.error(`\x1b[31m[FATAL ERROR]\x1b[0m This version of @heavstaltech/api is deprecated and no longer supported.`);
+  console.error(`Please update to V2.x or higher to continue using this package.`);
+  console.error(`Run: \x1b[36mnpm install @heavstaltech/api@latest\x1b[0m\n`);
+  process.exit(1);
+}
+
 import { tiktok, tiktokSlide } from './dl/tiktok';
 import { igdl, fbdl } from './dl/social';
 import { twitter } from './dl/twitter';
