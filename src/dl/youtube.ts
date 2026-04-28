@@ -1,13 +1,12 @@
-// YouTube.ts
+// youtube.ts
 // © Heavstal Tech™
-// modify before re-use - bugs may occur.
+// modify before re-use - bugs may occur
 
 import ytdl from '@distube/ytdl-core';
 import yts from 'yt-search';
 import crypto from 'crypto';
 import { AUTHOR, YouTubeResult, YouTubeSearchResult } from '../types';
 
-// first fallback
 var BASE = "https://embed.dlsrv.online";
 var FP = "edacb371e53d99bcdf84a2d97381139625d3d2cef69f912ba296e78247233c68";
 
@@ -16,7 +15,7 @@ function buildHeaders(videoId: string, extra: Record<string, string> = {}) {
     "Content-Type": "application/json",
     "Origin": BASE,
     "Referer": `${BASE}/v1/full?videoId=${videoId}`,
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
     "accept": "*/*",
     ...extra
   };
@@ -42,7 +41,7 @@ async function runDlsrvFallback(videoId: string, format: "mp3" | "mp4"): Promise
   const sig = crypto.createHmac("sha256", token.slice(-32)).update(`${ts}:${videoId}`).digest("hex");
   const path = format === "mp4" ? "/api/download/mp4" : "/api/download/mp3";
 
-  const res = await fallbackRequest(path, videoId, { videoId, format, quality: format === "mp4" ? "720" : "320" }, {
+  const res: any = await fallbackRequest(path, videoId, { videoId, format, quality: format === "mp4" ? "720" : "320" }, {
     "Authorization": `Bearer ${token}`, "x-fp": FP, "x-ts": ts, "x-sig": sig,
   });
 
@@ -54,21 +53,20 @@ async function runDlsrvFallback(videoId: string, format: "mp3" | "mp4"): Promise
     thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
     channel: info.author || "Unknown Channel",
     published: "Unknown", 
-    views: 0, 
-    duration: 0,
+    views: "0", 
+    duration: "0",
     url: res.url
   };
 }
 
-// external apis (second fallback)
 async function fetchVreden(url: string, type: 'mp3' | 'mp4'): Promise<string> {
-  const res = await (await fetch(`https://api.vreden.my.id/api/yt${type}?url=${encodeURIComponent(url)}`)).json();
+  const res: any = await (await fetch(`https://api.vreden.my.id/api/yt${type}?url=${encodeURIComponent(url)}`)).json();
   if (!res?.result?.download?.url) throw new Error("Vreden failed");
   return res.result.download.url;
 }
 
 async function fetchKyyOkatsu(url: string, type: 'mp3' | 'mp4'): Promise<string> {
-  const res = await (await fetch(`https://kyyokatsurestapi.my.id/downloader/yt${type}?url=${encodeURIComponent(url)}`)).json();
+  const res: any = await (await fetch(`https://kyyokatsurestapi.my.id/downloader/yt${type}?url=${encodeURIComponent(url)}`)).json();
   const dlUrl = type === 'mp3' ? res?.dl : res?.result?.mp4;
   if (!dlUrl) throw new Error("KyyOkatsu failed");
   return dlUrl;
@@ -76,11 +74,11 @@ async function fetchKyyOkatsu(url: string, type: 'mp3' | 'mp4'): Promise<string>
 
 async function fetchKord(url: string, type: 'mp3' | 'mp4'): Promise<string> {
   if (type === 'mp3') {
-    const res = await (await fetch(`https://api.kord.live/api/yt-song?url=${encodeURIComponent(url)}`)).json();
+    const res: any = await (await fetch(`https://api.kord.live/api/yt-song?url=${encodeURIComponent(url)}`)).json();
     if (!res?.url) throw new Error("Kord mp3 failed");
     return res.url;
   } else {
-    const res = await (await fetch(`https://api.kord.live/api/ytdl?url=${encodeURIComponent(url)}`)).json();
+    const res: any = await (await fetch(`https://api.kord.live/api/ytdl?url=${encodeURIComponent(url)}`)).json();
     const dlUrl = res?.videos?.find((v: any) => v.urls?.length)?.urls?.[0];
     if (!dlUrl) throw new Error("Kord mp4 failed");
     return dlUrl;
@@ -88,7 +86,7 @@ async function fetchKord(url: string, type: 'mp3' | 'mp4'): Promise<string> {
 }
 
 async function fetchPrexzy(url: string, type: 'mp3' | 'mp4'): Promise<string> {
-  const res = await (await fetch(`https://apis.prexzyvilla.site/download/ytdownload?url=${encodeURIComponent(url)}&type=${type === 'mp3' ? 'audio' : 'video'}`)).json();
+  const res: any = await (await fetch(`https://apis.prexzyvilla.site/download/ytdownload?url=${encodeURIComponent(url)}&type=${type === 'mp3' ? 'audio' : 'video'}`)).json();
   if (!res?.download_url) throw new Error("Prexzy failed");
   return res.download_url;
 }
@@ -114,14 +112,12 @@ async function runDeepFallback(url: string, type: "mp3" | "mp4", videoId: string
     thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
     channel: "YouTube",
     published: "Unknown",
-    views: 0, 
-    duration: 0,
+    views: "0", 
+    duration: "0",
     url: dlUrl
   };
 }
 
-
-// exports
 export const search = async (query: string): Promise<YouTubeSearchResult[]> => {
   try {
     const result = await yts(query);
@@ -156,8 +152,8 @@ export const ytmp3 = async (url: string): Promise<YouTubeResult> => {
       thumbnail: info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url,
       channel: info.videoDetails.ownerChannelName,
       published: info.videoDetails.publishDate,
-      views: Number(info.videoDetails.viewCount),
-      duration: Number(info.videoDetails.lengthSeconds),
+      views: info.videoDetails.viewCount,
+      duration: info.videoDetails.lengthSeconds,
       url: format.url
     };
   } catch (error: any) {
@@ -193,8 +189,8 @@ export const ytmp4 = async (url: string): Promise<YouTubeResult> => {
       thumbnail: info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url,
       channel: info.videoDetails.ownerChannelName,
       published: info.videoDetails.publishDate,
-      views: Number(info.videoDetails.viewCount),
-      duration: Number(info.videoDetails.lengthSeconds),
+      views: info.videoDetails.viewCount,
+      duration: info.videoDetails.lengthSeconds,
       url: format.url
     };
   } catch (error: any) {
