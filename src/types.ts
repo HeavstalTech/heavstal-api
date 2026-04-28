@@ -106,3 +106,7 @@ export interface ApkResult {
   dl_url: string;
   last_updated?: string;
 }
+
+export interface HeavstalConfig {
+  apiKey?: string;
+}
