@@ -1,6 +1,4 @@
-process.env.HEAVSTAL_API_KEY = process.env.HEAVSTAL_API_KEY;
-
-const api = require('./dist/index.js');
+var api = require('./dist/index.js');
 
 async function runTest(name, testFn) {
   process.stdout.write(`⏳ Testing ${name}... `);
