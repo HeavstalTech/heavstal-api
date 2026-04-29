@@ -38,7 +38,7 @@ export async function heavstalFetch(endpoint: string, body: any, config?: Heavst
       throw new Error(`Heavstal API Error: ${serverMsg} ${serverDetails ? `- ${serverDetails}` : ''}`);
     }
 
-    // Return just the nested "data" object from backend response
+    // Return just the nested "data" object from your backend response
     return responseData.data;
 
   } catch (error: any) {
