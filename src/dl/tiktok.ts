@@ -1,6 +1,4 @@
 import { AUTHOR, TikTokResult, HeavstalConfig } from '../types';
-import axios from 'axios'
-import * as cheerio from 'cheerio'
 
 /**
  * Main TikTok Function (SDK Wrapper)
@@ -22,16 +20,14 @@ export const tiktok = async (input: string, config?: HeavstalConfig): Promise<Ti
       },
       body: JSON.stringify({ url: input, query: input })
     });
-
-    // Parse the JSON response first to see if the server returned custom error details
+    
     let responseData;
     try {
       responseData = await response.json();
     } catch {
       throw new Error(`Server returned a non-JSON response with status: ${response.status}`);
     }
-
-    // Handle HTTP errors manually (fetch doesn't throw on 4xx/5xx like Axios does)
+    
     if (!response.ok) {
       const serverMsg = responseData?.error || "Unknown Error";
       const serverDetails = responseData?.details || "";
@@ -47,8 +43,6 @@ export const tiktok = async (input: string, config?: HeavstalConfig): Promise<Ti
     }
 
     const apiData = responseData.data;
-
-    // Map your API response back into the SDK TypeScript format
     return {
       author: AUTHOR,
       status: true,
@@ -64,55 +58,70 @@ export const tiktok = async (input: string, config?: HeavstalConfig): Promise<Ti
     };
 
   } catch (error: any) {
-    // If it's already an error we formatted above, rethrow it
     if (error.message.includes('Heavstal') || error.message.includes('Auth') || error.message.includes('Rate Limit')) {
         throw error;
     }
-    // Otherwise, it was a fundamental network failure (e.g. DNS issue, no internet)
     throw new Error(`Network Error: Could not reach Heavstal servers. Details: ${error.message}`);
   }
 };
 
 /**
- * TikTok Slide Downloader
+ * TikTok Slide Downloader (SDK Wrapper)
  */
-export const tiktokSlide = async (url: string): Promise<TikTokResult> => {
+export const tiktokSlide = async (url: string, config?: HeavstalConfig): Promise<TikTokResult> => {
+  const apiKey = config?.apiKey || process.env.HEAVSTAL_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("Missing API Key. Please provide it in the function options or set 'HEAVSTAL_API_KEY' in your environment variables.");
+  }
+
   try {
-    const response = await axios.post("https://api.ttsave.app/", {
-      id: url,
-      hash: '1e3a27c51eb6370b0db6f9348a481d69',
-      mode: 'slide',
-      locale: 'en',
-      loading_indicator_url: 'https://ttsave.app/images/slow-down.gif',
-      unlock_url: 'https://ttsave.app/en/unlock'
-    }, {
-      headers: getRandomHeaders()
+    const response = await fetch("https://heavstal.com.ng/api/v1/tiktok-slide", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey
+      },
+      body: JSON.stringify({ url })
     });
 
-    const $ = cheerio.load(response.data);
-    const $element = $('div.flex.flex-col.items-center.justify-center.mt-2.mb-5');
-    if ($element.length === 0) throw new Error("Slide not found or service unavailable");
-    const statsDiv = $element.find('div.flex.flex-row.items-center.justify-center');
+    let responseData;
+    try { responseData = await response.json(); } catch { throw new Error(`Server Error: ${response.status}`); }
+
+    if (!response.ok) {
+      const serverMsg = responseData?.error || "Unknown Error";
+      if (response.status === 429) throw new Error(`Rate Limit Exceeded (${serverMsg}).`);
+      if (response.status === 401 || response.status === 403) throw new Error(`Auth Failed (${serverMsg}).`);
+      throw new Error(`Heavstal API Error: ${serverMsg}`);
+    }
+
+    const apiData = responseData.data;
+
     return {
       author: AUTHOR,
       status: true,
-      uniqueId: $element.find('input#unique-id').attr('value'),
-      title: $element.find('div.flex.flex-row.items-center.justify-center h2').text().trim(),
-      profileImage: $element.find('a').first().find('img').attr('src'),
-      profileUrl: $element.find('a').first().attr('href'),
-      hashtags: $element.find('p.text-gray-600').text().split(' ').filter(Boolean),
-      likes: statsDiv.eq(0).find('span').text().trim(),
-      comments: statsDiv.eq(1).find('span').text().trim(),
-      shares: statsDiv.eq(2).find('span').text().trim(),
-      downloads: statsDiv.eq(3).find('span').text().trim(),
-      views: statsDiv.eq(4).find('span').text().trim()
+      uniqueId: apiData.uniqueId,
+      title: apiData.title,
+      profileImage: apiData.profileImage,
+      profileUrl: apiData.profileUrl,
+      hashtags: apiData.hashtags,
+      likes: apiData.likes,
+      comments: apiData.comments,
+      shares: apiData.shares,
+      downloads: apiData.downloads,
+      views: apiData.views,
+      slideImages: apiData.images 
     };
+
   } catch (error: any) {
-     return {
-        author: AUTHOR,
-        status: false,
-        title: "Error",
-        views: error.message
-     } as TikTokResult;
+    if (error.message.includes('Heavstal') || error.message.includes('Auth') || error.message.includes('Rate Limit')) {
+        throw error;
+    }
+    return {
+      author: AUTHOR,
+      status: false,
+      title: "Error",
+      views: error.message
+    } as TikTokResult;
   }
 };
