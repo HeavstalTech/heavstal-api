@@ -1,7 +1,7 @@
 {
   "name": "@heavstaltech/api",
   "version": "2.0.1-beta",
-  "description": "A powerful multi-purpose scraper and API client. Supports ESM and CJS. Supports JavaScript & Typescript",
+  "description": "A powerful, zero-depedency multi-purpose scraper and API client. Supports ESM and CJS. Supports JavaScript & Typescript",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
