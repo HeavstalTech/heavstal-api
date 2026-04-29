@@ -35,7 +35,7 @@ async function main() {
 
   results.push(await runTest("Tools: Remini", async () => {
     try {
-      const testImg = "https://ibb.co/4g9xvVs7"; 
+      const testImg = "https://files.catbox.moe/cuvla9.png"; 
       const buffer = await api.tools.remini(testImg, "enhance");
       return Buffer.isBuffer(buffer);
     } catch (e) {
