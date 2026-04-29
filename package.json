@@ -1,7 +1,7 @@
 {
   "name": "@heavstaltech/api",
   "version": "2.0.1-beta",
-  "description": "A powerful, zero-depedency multi-purpose scraper and API client. Supports ESM and CJS. Supports JavaScript & Typescript",
+  "description": "A powerful, zero-dependency multi-purpose sdk client for interacting with Heavstal Tech Api Utilities. Supports ESM and CJS.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -30,7 +30,6 @@
  "url": "https://github.com/HeavstalTech/heavstaltech-api/issues"
   },
   "keywords": [
-    "scraper",
     "api",
     "sdk",
     "heavstal-tech"
