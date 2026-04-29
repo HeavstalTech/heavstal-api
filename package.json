@@ -32,22 +32,13 @@
   "keywords": [
     "scraper",
     "api",
-    "downloader",
+    "sdk",
     "heavstal-tech"
   ],
   "author": "HEAVSTAL TECH",
   "license": "MIT",
-  "dependencies": {
-    "@distube/ytdl-core": "^4.13.5",
-    "axios": "^1.6.0",
-    "cheerio": "^1.0.0-rc.12",
-    "form-data": "^4.0.0",
-    "yt-search": "^2.10.4",
-    "adm-zip": "^0.5.16"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@types/adm-zip": "^0.5.7",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0"
   },
