@@ -1,4 +1,6 @@
 import { AUTHOR, TikTokResult, HeavstalConfig } from '../types';
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 
 /**
  * Main TikTok Function (SDK Wrapper)
