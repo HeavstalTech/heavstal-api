@@ -1,6 +1,6 @@
 {
   "name": "@heavstaltech/api",
-  "version": "2.0.2-rc",
+  "version": "2.0.3-rc",
   "description": "A powerful, zero-dependency multi-purpose sdk client for interacting with Heavstal Tech Api Utilities. Supports ESM and CJS.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
