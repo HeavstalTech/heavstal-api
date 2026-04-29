@@ -1,29 +1,21 @@
-# @heavstaltech/api
+<div align="center">
+  <img src="https://heavstal.com.ng/ht_icon.svg" width="120" alt="Heavstal Tech Logo" />
+  <h1>@heavstaltech/api</h1>
 
+  <p>
+    <img alt="NPM Version" src="https://img.shields.io/npm/v/@heavstaltech/api?style=flat-square">
+    <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/HeavstalTech/heavstaltech-api/test.yml?style=flat-square&label=tests">
+    <img alt="License" src="https://img.shields.io/npm/l/@heavstaltech/api?style=flat-square">
+  </p>
+</div>
 
-![alt text](https://files.catbox.moe/nqe6g5.jpg)
-![NPM Version](https://img.shields.io/npm/v/@heavstaltech/api?style=flat-square)
-![Build Status](https://img.shields.io/github/actions/workflow/status/HeavstalTech/heavstaltech-api/test.yml?style=flat-square&label=tests)
-![License](https://img.shields.io/npm/l/@heavstaltech/api?style=flat-square)
+A powerful, zero-dependency multi-purpose SDK client for interacting with Heavstal Tech API Utilities. Supports ESM and CJS.
 
-A Lightweight, powerful, all-in-one scraping and utility library built by **HEAVSTAL TECH**. 
-This module provides easy access to media downloaders (TikTok, YouTube, Instagram, Facebook), search engines, and AI tools.
-
-It is designed to work seamlessly in both **CommonJS (`require`)** and **ES Modules (`import`)** environments.
-
----
-
-## 🌐 Heavstal Tech Ecosystem
-
-This package is part of the **Heavstal Tech** ecosystem. 
-
-**Explore More APIs:**  
-Visit our official API Hub to discover more tools, endpoints, and detailed documentation:  
-👉 **[https://heavstal.com.ng/apis](https://heavstal.com.ng/apis)**
+This module provides streamlined programmatic access to media parsing, search engines, file compilation, and AI utility tools without requiring external dependencies like Puppeteer or Axios.
 
 ---
 
-## 📦 Installation
+## Installation
 
 Install via npm:
 
@@ -31,285 +23,202 @@ Install via npm:
 npm install @heavstaltech/api
 ```
 
+Install via yarn:
+
+```bash
+yarn add @heavstaltech/api
+```
+
 ---
 
-## 🚀 Usage (ESM vs CJS)
+## Authentication
 
-This library is a **hybrid module**. You can use it in legacy Node.js projects or modern TypeScript/ESM projects without any configuration.
+To use this SDK, you must have a valid API Key from [Heavstal Tech Credentials](https://heavstal.com.ng/credentials). The SDK supports two methods of authentication:
 
-### CommonJS (`require`)
-```javascript
-const { downloader, search, tools } = require('@heavstaltech/api');
+### 1. Environment Variable (Recommended)
+The SDK will automatically detect your API key if it is set in your environment variables.
 
-// or require specific functions
-const { tiktok } = require('@heavstaltech/api');
+```env
+# .env
+HEAVSTAL_API_KEY=ht_live_your_api_key_here
 ```
+
+### 2. Manual Configuration Object
+If you prefer not to use environment variables, or need to switch keys dynamically, you can pass a configuration object as the final argument to any function.
+
+```javascript
+const config = { apiKey: "ht_live_your_api_key_here" };
+
+// Example passing the config
+const result = await downloader.tiktok("https://vt.tiktok.com/...", config);
+```
+
+---
+
+## Usage
+
+This library is a hybrid module, meaning it seamlessly supports both **CommonJS (`require`)** and **ES Modules (`import`)**.
 
 ### ES Modules / TypeScript (`import`)
 ```typescript
 import { downloader, search, tools } from '@heavstaltech/api';
 
-// or import specific functions
-import { tiktok, remini } from '@heavstaltech/api';
+// Or import specific standalone methods
+import { tiktok, remini, unzipToText } from '@heavstaltech/api';
+```
+
+### CommonJS (`require`)
+```javascript
+const { downloader, search, tools } = require('@heavstaltech/api');
+
+// Or require specific standalone methods
+const { tiktok, remini, unzipToText } = require('@heavstaltech/api');
 ```
 
 ---
 
-## 📚 API Documentation
+## API Documentation
 
-### 1. Social Media Downloaders
+### 1. Social Media Utilities
 
-#### TikTok (Video & Slides)
-Supports downloading videos without watermarks, searching for videos, and fetching slide images.
-
+**TikTok (Video & Slides)**
+Extract videos without watermarks, audio tracks, and slide images.
 ```javascript
-// 1. Search or Download via URL
-const result = await downloader.tiktok("https://vt.tiktok.com/ZS..."); 
-// OR search: await downloader.tiktok("funny cat videos");
+// Video Extraction
+const video = await downloader.tiktok("https://vt.tiktok.com/..."); 
+console.log(video.no_watermark);
 
-console.log(result);
-/* Output:
-{
-  author: { name: 'HEAVSTAL TECH', ... },
-  status: true,
-  title: 'Video Title',
-  no_watermark: 'https://...',
-  audio: 'https://...'
-}
-*/
-
-// 2. TikTok Slides
-const slide = await downloader.tiktokSlide("https://vt.tiktok.com/ZS...");
-console.log(slide);
+// Image Slides Extraction
+const slide = await downloader.tiktokSlide("https://vt.tiktok.com/...");
+console.log(slide.slideImages);
 ```
 
-#### Instagram (Reels, Images, Videos)
-Downloads content from Instagram public posts.
-
+**Instagram (Reels, Images, Videos)**
+Extract media from public Instagram posts.
 ```javascript
-const ig = await downloader.igdl("https://www.instagram.com/p/Cp...");
-
-ig.forEach(media => {
-  console.log(`Type: ${media.type} | URL: ${media.url}`);
-});
+const ig = await downloader.igdl("https://www.instagram.com/p/...");
+console.log(ig);
 ```
 
-#### Facebook (Watch & Public Videos)
-Downloads public Facebook videos in SD or HD.
-
+**Facebook**
+Extract public Facebook Watch and post videos.
 ```javascript
 const fb = await downloader.fbdl("https://fb.watch/...");
-console.log(fb);
 ```
 
----
-
-#### Twitter / X (Video & Audio)
-Download videos from **Twitter** or **X.com**. Automatically handles link conversion and provides HD/SD options.
-
-> **Alias:** You can use `downloader.twitter` or `downloader.xdl`.
-
+**Twitter / X**
+Extract media from X.com (Twitter). Returns standard and high-definition video links.
 ```javascript
-// Supports both twitter.com and x.com links
-const video = await downloader.xdl("https://x.com/ElonMusk/status/...");
-
-console.log(video);
-/* Output:
-{
-  status: true,
-  desc: "Tweet Caption...",
-  thumbnail: "https://...",
-  video_sd: "https://...", // Standard Definition
-  video_hd: "https://..."  // High Definition
-}
-*/
+const tweet = await downloader.xdl("https://x.com/user/status/...");
+console.log(tweet.video_hd);
 ```
 
----
+### 2. YouTube Search & Extraction
 
-### 2. YouTube (Search & Download)
-
-**Note:** Powered by `@distube/ytdl-core` and `yt-search`.
-
-#### Search
+**Search**
 ```javascript
 const results = await search.youtube("No Copyright Sounds");
-console.log(results[0]); // Returns video details
+console.log(results[0].url); 
 ```
 
-#### Download Audio (MP3)
+**Extract Audio / Video**
 ```javascript
+// Extract MP3 Audio
 const audio = await downloader.ytmp3("https://youtu.be/...");
-console.log(audio.url); // Direct download link
-```
 
-#### Download Video (MP4)
-```javascript
+// Extract MP4 Video
 const video = await downloader.ytmp4("https://youtu.be/...");
-console.log(video.url); // Direct download link
-```
 
-#### Play (Search & Auto-Download)
-Searches for a query and immediately returns the download link for the first result.
-```javascript
-// Get Audio
+// Play (Search and instantly extract first result)
 const song = await downloader.play("Adele Hello", "mp3");
-
-// Get Video
-const vid = await downloader.play("Adele Hello", "mp4");
 ```
 
----
+### 3. Search Utilities
 
-### 3. Search & Lyrics
-
-#### Guitar Chords & Lyrics
-Fetches chords and lyrics from Gitagram.
+**APK Metadata & Downloads**
+Search for Android applications and fetch high-speed download links.
 ```javascript
-const song = await search.chords("Ed Sheeran Perfect");
-console.log(song.chord);
+const app = await search.apk("WhatsApp");
+console.log(`Version: ${app.version} | Link: ${app.dl_url}`);
 ```
 
-#### Wattpad
-Search for stories on Wattpad.
+**Song Lyrics (LRCLIB & Genius)**
+Fetch accurate song metadata and lyrics.
 ```javascript
-const stories = await search.wattpad("Werewolf");
-console.log(stories);
+const song = await search.lyrics("Kendrick Lamar DNA");
+console.log(song.lyrics);
 ```
 
----
+**Wattpad & Chords**
+```javascript
+// Search Wattpad stories
+const stories = await search.wattpad("Science Fiction");
 
-### 4. Utilities & AI Tools
+// Fetch Guitar Chords
+const chords = await search.chords("Ed Sheeran Perfect");
+```
 
-#### Remini (AI Image Enhancer)
-Enhances low-quality images using AI. Returns a `Buffer`.
+### 4. General & AI Tools
+
+**Repository/ZIP to Text Extractor**
+Downloads a remote ZIP file, recursively extracts it, and compiles it into a single text buffer. Highly optimized for feeding codebases into Large Language Models (LLMs).
 ```javascript
 const fs = require('fs');
 
-// Methods: 'enhance', 'recolor', 'dehaze'
-const buffer = await tools.remini("https://example.com/blurry.jpg", "enhance");
-
-fs.writeFileSync("enhanced.jpg", buffer);
-```
-
-#### Screenshot Website
-Takes a screenshot of any URL.
-```javascript
-const buffer = await tools.ssweb("https://google.com", "desktop");
-// options: 'desktop', 'tablet', 'phone'
-```
-
-#### Stylish Text
-Converts normal text into fancy fonts.
-```javascript
-const fonts = await tools.styleText("Heavstal Tech");
-console.log(fonts);
-```
-
-#### Morse Code Converter
-Convert text to International Morse Code and vice versa. Supports letters, numbers, and punctuation.
-
-```javascript
-import { tools } from '@heavstaltech/api';
-
-// 1. Encode (Text -> Morse)
-const encoded = await tools.morse("HELLO WORLD", "encode");
-console.log(encoded); 
-// Output: .... . .-.. .-.. --- / .-- --- .-. .-.. -..
-
-// 2. Decode (Morse -> Text)
-const decoded = await tools.morse("... --- ...", "decode");
-console.log(decoded); 
-// Output: SOS
-```
-
-
-#### Text to Speech (Google TTS)
-Convert text into audio using Google's engine.
-
-```javascript
-import { tools } from '@heavstaltech/api';
-import fs from 'fs';
-
-// 1. English (Default)
-const buffer = await tools.tts("Hello World", "en");
-
-// 2. Other Languages (e.g., Japanese 'ja', Spanish 'es')
-const bufferJP = await tools.tts("Konnichiwa", "ja");
-
-fs.writeFileSync("voice.mp3", buffer);
-```
-
-
-### 5. Image Makers (Ephoto360 - Temporarily Unavailable)
-
-Generate high-quality text effects like Glitch, Neon, and Gold.
-
-**Supported Styles:** `glitchtext`, `writetext`, `advancedglow`, `typographytext`, `pixelglitch`, `neonglitch`, `flagtext`, `flag3dtext`, `deletingtext`, `blackpinkstyle`, `glowingtext`, `underwatertext`, `logomaker`, `cartoonstyle`, `papercutstyle`, `watercolortext`, `effectclouds`, `blackpinklogo`, `gradienttext`, `summerbeach`, `luxurygold`, `multicoloredneon`, `sandsummer`, `galaxywallpaper`, `1917style`, `makingneon`, `royaltext`, `freecreate`, `galaxystyle`, `lighteffects`
-
-```javascript
-import { tools } from '@heavstaltech/api';
-
-const imageUrl = await tools.ephoto("glitchtext", "Heavstal Tech");
-console.log(imageUrl); 
-// Output: https://en.ephoto360.com/....jpg
-```
-
-
-#### Lyrics Search
-Fetch song lyrics and metadata. Uses a robust multi-source engine (LRCLIB + Genius).
-
-```javascript
-import { search } from '@heavstaltech/api';
-
-const song = await search.lyrics("Kendrick Lamar DNA");
-
-console.log(`Title: ${song.title}`);
-console.log(`Artist: ${song.artist}`);
-console.log(`Lyrics:\n${song.lyrics}`);
-```
-
-#### Zip to Text Extractor
-Download a remote ZIP file, extract recursively, and compile to a single text buffer.
-
-```javascript
-import { tools } from '@heavstaltech/api';
-import fs from 'fs';
-
-// Option 1: Text Only (Best for LLMs - Skips Images/PDFs)
-const result = await tools.unzip("https://github.com/user/repo/archive/main.zip", { 
+// includeBinary: false skips images/PDFs, perfect for text/code extraction
+const codebase = await tools.unzip("https://github.com/user/repo/archive/main.zip", { 
   includeBinary: false 
 });
 
-// Option 2: Include Everything (Base64 encoded binary files)
-const fullBackup = await tools.unzip("https://github.com/user/repo/archive/main.zip", { 
-  includeBinary: true 
-});
-
-fs.writeFileSync(result.filename, result.buffer);
+fs.writeFileSync(codebase.filename, codebase.buffer);
 ```
 
-#### APK Downloader (Android)
-Search for Android apps and get direct high-speed download links along with version metadata.
-
+**Remini (AI Image Enhancer)**
+Enhances, dehazes, or recolors low-quality images.
 ```javascript
-import { search } from '@heavstaltech/api';
+// Methods: 'enhance', 'recolor', 'dehaze'
+const buffer = await tools.remini("https://example.com/blurry.jpg", "enhance");
+fs.writeFileSync("enhanced.jpg", buffer);
+```
 
-const app = await search.apk("WhatsApp");
+**Text to Speech (Google TTS)**
+Convert text into spoken audio buffer.
+```javascript
+// Second argument is the language code (e.g., 'en', 'ja', 'es')
+const audioBuffer = await tools.tts("Hello World", "en");
+```
 
-console.log(`Name: ${app.name}`);
-console.log(`Version: ${app.version}`);
-console.log(`Size: ${app.size}`);
-console.log(`Download Link: ${app.dl_url}`);
+**Website Screenshot**
+Capture responsive screenshots of any given URL.
+```javascript
+// Device options: 'desktop', 'tablet', 'phone'
+const imgBuffer = await tools.ssweb("https://google.com", "desktop");
+```
+
+**Text Styling & Morse Code**
+```javascript
+// Generate stylized text variations
+const fonts = await tools.styleText("Heavstal Tech");
+
+// Morse code encoding/decoding
+const morseStr = await tools.morse("HELLO", "encode"); // Output: .... . .-.. .-.. ---
 ```
 
 ---
 
-## 📝 License
+## Heavstal Tech Ecosystem
+
+This package is part of the Heavstal Tech platform. For endpoint documentation, uptime status, and higher rate limits, please visit our official portals:
+
+* **Documentation:** [https://docs.heavstal.com.ng](https://docs.heavstal.com.ng)
+* **API Key:** [https://heavstal.com.ng/credentials](https://heavstal.com.ng/credentials)
+* **Pricing:** [https://heavstal.com.ng/pricing](https://heavstal.com.ng/pricing)
+
+---
+
+## License
 
 This project is licensed under the **MIT License**.
-
----
 
 <div align="center">
   <p>Maintained by <a href="https://heavstal.com.ng">HEAVSTAL TECH</a></p>
