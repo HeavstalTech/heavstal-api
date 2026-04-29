@@ -25,3 +25,5 @@ jobs:
 
       - name: Run Test Script
         run: node test.js
+        env:
+          HEAVSTAL_API_KEY: ${{ secrets.HEAVSTAL_API_KEY }}
