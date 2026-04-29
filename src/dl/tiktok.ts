@@ -1,117 +1,74 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
-import { AUTHOR, TikTokResult } from '../types';
+import { AUTHOR, TikTokResult, HeavstalConfig } from '../types';
 
-const USER_AGENTS = [
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
-  'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1'
-];
+/**
+ * Main TikTok Function (SDK Wrapper)
+ * Supports: URL Download & Search Query
+ */
+export const tiktok = async (input: string, config?: HeavstalConfig): Promise<TikTokResult> => {
+  const apiKey = config?.apiKey || process.env.HEAVSTAL_API_KEY;
 
-const getRandomHeaders = () => ({
-  'User-Agent': USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)],
-  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  'Accept': 'application/json, text/javascript, */*; q=0.01'
-});
+  if (!apiKey) {
+    throw new Error("Missing API Key. Please provide it in the function options or set 'HEAVSTAL_API_KEY' in your environment variables. Get your key at: https://heavstal.com.ng/credentials");
+  }
 
-const cleanText = (str: string) => str ? str.replace(/(<br?\s?\/?>)/gi, " \n").replace(/(<([^>]+)>)/gi, "").trim() : "";
-const cleanUrl = (url: string) => url ? url.replace('https:', 'http:') : "";
-
-const lovetikFallback = async (url: string): Promise<TikTokResult> => {
   try {
-    const { data } = await axios.post("https://lovetik.com/api/ajax/search", 
-      new URLSearchParams({ query: url }), 
-      { headers: getRandomHeaders() }
-    );
+    const response = await fetch("https://heavstal.com.ng/api/v1/tiktok", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey
+      },
+      body: JSON.stringify({ url: input, query: input })
+    });
 
-    if (!data.links) throw new Error("Lovetik: No links found");
+    // Parse the JSON response first to see if the server returned custom error details
+    let responseData;
+    try {
+      responseData = await response.json();
+    } catch {
+      throw new Error(`Server returned a non-JSON response with status: ${response.status}`);
+    }
 
+    // Handle HTTP errors manually (fetch doesn't throw on 4xx/5xx like Axios does)
+    if (!response.ok) {
+      const serverMsg = responseData?.error || "Unknown Error";
+      const serverDetails = responseData?.details || "";
+      
+      if (response.status === 429) {
+        throw new Error(`Rate Limit Exceeded (${serverMsg}). Upgrade plan at https://heavstal.com.ng/pricing`);
+      }
+      if (response.status === 401 || response.status === 403) {
+        throw new Error(`Auth Failed (${serverMsg}). Check your API Key.`);
+      }
+      
+      throw new Error(`Heavstal API Error: ${serverMsg} ${serverDetails ? `- ${serverDetails}` : ''}`);
+    }
+
+    const apiData = responseData.data;
+
+    // Map your API response back into the SDK TypeScript format
     return {
       author: AUTHOR,
       status: true,
-      title: cleanText(data.desc),
-      cover: cleanUrl(data.cover),
-      no_watermark: cleanUrl(data.links.find((l: any) => l.a && !l.s)?.a), // Usually the first link is No WM
-      watermark: cleanUrl(data.links.find((l: any) => l.s?.includes('Watermark'))?.a),
-      music: cleanUrl(data.links.find((l: any) => l.t?.includes('Audio'))?.a),
-      author_name: cleanText(data.author),
-      views: "N/A"
-    } as TikTokResult;
+      title: apiData.title,
+      author_name: apiData.author,
+      cover: apiData.cover,
+      no_watermark: apiData.video_nowm,
+      music: apiData.audio,
+      views: apiData.stats?.views,
+      likes: apiData.stats?.likes,
+      shares: apiData.stats?.shares,
+      downloads: apiData.stats?.downloads
+    };
 
   } catch (error: any) {
-    throw new Error(`Fallback Failed: ${error.message}`);
-  }
-};
-
-/**
- * Main TikTok Function
- * Supports: URL Download & Search Query
- */
-export const tiktok = async (input: string): Promise<TikTokResult> => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const isUrl = input.match(/tiktok\.com/i);
-      let data;
-      
-      try {
-        if (isUrl) {
-          const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(input)}`;
-          const response = await axios.get(apiUrl, { headers: getRandomHeaders() });
-          if (response.data.code !== 0) throw new Error("Private video or Invalid URL");
-          data = response.data.data;
-        } else {
-          const apiUrl = `https://www.tikwm.com/api/feed/search`;
-          const response = await axios.post(apiUrl, 
-            new URLSearchParams({
-              keywords: input,
-              count: '1',
-              cursor: '0',
-              HD: '1'
-            }), 
-            { headers: { ...getRandomHeaders(), 'Cookie': 'current_language=en' } }
-          );
-          
-          if (!response.data.data?.videos || response.data.data.videos.length === 0) {
-            throw new Error(`No results found for: ${input}`);
-          }
-          data = response.data.data.videos[0];
-        }
-
-        const result: TikTokResult = {
-          author: AUTHOR,
-          status: true,
-          title: data.title,
-          cover: data.cover,
-          origin_cover: data.origin_cover,
-          no_watermark: data.play,
-          watermark: data.wmplay,
-          music: data.music,
-          views: data.play_count,
-          likes: data.digg_count,
-          comments: data.comment_count,
-          shares: data.share_count,
-          downloads: data.download_count
-        };
-        resolve(result);
-
-      } catch (primaryError) {
-        if (isUrl) {
-          console.warn("Primary TikTok API failed, switching to fallback...");
-          const fallbackData = await lovetikFallback(input);
-          resolve(fallbackData);
-        } else {
-          throw primaryError;
-        }
-      }
-    } catch (error: any) {
-      reject({
-        author: AUTHOR,
-        status: false,
-        message: error.message || "TikTok processing failed"
-      });
+    // If it's already an error we formatted above, rethrow it
+    if (error.message.includes('Heavstal') || error.message.includes('Auth') || error.message.includes('Rate Limit')) {
+        throw error;
     }
-  });
+    // Otherwise, it was a fundamental network failure (e.g. DNS issue, no internet)
+    throw new Error(`Network Error: Could not reach Heavstal servers. Details: ${error.message}`);
+  }
 };
 
 /**
