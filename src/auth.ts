@@ -7,7 +7,7 @@ export async function verifyApiKey(userApiKey?: string): Promise<void> {
         throw new Error("Missing API Key. Please provide it in the function options or set 'HEAVSTAL_API_KEY' in your environment variables. Get your key at: https://heavstal.com.ng/credentials");
     }
 
-    if (!apiKey.startsWith('ht_live_') || (apiKey.length !== 40 && apiKey.length !== 56)) {
+    if (!apiKey.startsWith('ht_live_') || apiKey.length < 10) {
         throw new Error("Invalid API Key format. Please go to https://heavstal.com.ng/credentials to generate or rotate your key. More info: https://docs.heavstal.com.ng")
     }
 
