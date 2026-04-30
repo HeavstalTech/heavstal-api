@@ -64,7 +64,7 @@ This library is a hybrid module, meaning it seamlessly supports both **CommonJS 
 import { downloader, search, tools } from '@heavstaltech/api';
 
 // Or import specific standalone methods
-import { tiktok, remini, unzipToText } from '@heavstaltech/api';
+import { tiktok, apk, unzipToText } from '@heavstaltech/api';
 ```
 
 ### CommonJS (`require`)
@@ -72,7 +72,7 @@ import { tiktok, remini, unzipToText } from '@heavstaltech/api';
 const { downloader, search, tools } = require('@heavstaltech/api');
 
 // Or require specific standalone methods
-const { tiktok, remini, unzipToText } = require('@heavstaltech/api');
+const { tiktok, apk, unzipToText } = require('@heavstaltech/api');
 ```
 
 ---
@@ -173,13 +173,6 @@ const codebase = await tools.unzip("https://github.com/user/repo/archive/main.zi
 fs.writeFileSync(codebase.filename, codebase.buffer);
 ```
 
-**Remini (AI Image Enhancer)**
-Enhances, dehazes, or recolors low-quality images.
-```javascript
-// Methods: 'enhance', 'recolor', 'dehaze'
-const buffer = await tools.remini("https://example.com/blurry.jpg", "enhance");
-fs.writeFileSync("enhanced.jpg", buffer);
-```
 
 **Text to Speech (Google TTS)**
 Convert text into spoken audio buffer.
