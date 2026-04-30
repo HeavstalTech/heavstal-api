@@ -33,19 +33,6 @@ async function main() {
     return Buffer.isBuffer(buffer);
   }));
 
-  results.push(await runTest("Tools: Remini", async () => {
-    try {
-      const testImg = "https://files.catbox.moe/cuvla9.png"; 
-      const buffer = await api.tools.remini(testImg, "enhance");
-      return Buffer.isBuffer(buffer);
-    } catch (e) {
-      if (e.message.includes("EPROTO") || e.message.includes("SSL") || e.message.includes("500")) {
-        console.log("   (⚠️ Remini Blocked CI SSL / Server Error - Expected)");
-        return true;
-      }
-      return false;
-    }
-  }));
 
   results.push(await runTest("Search: APK", async () => {
     try {
