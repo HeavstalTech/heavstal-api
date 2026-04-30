@@ -8,12 +8,6 @@ export const ssweb = async (url: string, device: 'desktop' | 'tablet' | 'phone' 
   return Buffer.from(arrayBuffer);
 };
 
-export const remini = async (imageUrl: string, method: 'enhance' | 'recolor' | 'dehaze' = 'enhance', config?: HeavstalConfig): Promise<Buffer> => {
-  const apiData = await heavstalFetch('remini', { url: imageUrl, method }, config);
-  const imgResponse = await fetch(apiData.url);
-  const arrayBuffer = await imgResponse.arrayBuffer();
-  return Buffer.from(arrayBuffer);
-};
 
 export const styleText = async (text: string, config?: HeavstalConfig): Promise<{ author: Author, name: string, result: string }[]> => {
   const apiData = await heavstalFetch('style-text', { text }, config);
