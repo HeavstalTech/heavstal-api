@@ -9,6 +9,9 @@
   </p>
 </div>
 
+> [!IMPORTANT]> This package has been moved to [@heavstal/api](https://www.npmjs.com/package/@heavstal/api) and is no longer maintained, please migrate as soon as possible to receive new updates
+
+
 A powerful, zero-dependency multi-purpose SDK client for interacting with Heavstal Tech API Utilities. Supports ESM and CJS.
 
 This module provides streamlined programmatic access to media parsing, search engines, file compilation, and AI utility tools without requiring external dependencies like Puppeteer or Axios.
