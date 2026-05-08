@@ -4,7 +4,7 @@
 
   <p>
     <img alt="NPM Version" src="https://img.shields.io/npm/v/@heavstal/api?style=flat-square">
-    <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/HeavstalTech/heavstaltech-api/test.yml?style=flat-square&label=tests">
+    <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/HeavstalTech/heavstal-api/test.yml?style=flat-square&label=tests">
     <img alt="License" src="https://img.shields.io/npm/l/@heavstal/api?style=flat-square">
   </p>
 </div>
