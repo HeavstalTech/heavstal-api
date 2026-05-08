@@ -9,7 +9,9 @@
   </p>
 </div>
 
-> [!IMPORTANT]> This package has been moved to [@heavstal/api](https://www.npmjs.com/package/@heavstal/api) and is no longer maintained, please migrate as soon as possible to receive new updates
+> [!WARNING]
+> **Migration Notice:** `@heavstaltech/api` has been renamed to **[@heavstal/api](https://www.npmjs.com/package/@heavstal/api)**. 
+> The legacy `@heavstaltech/api` package is now deprecated. Please update your dependencies to continue receiving security updates and new features.
 
 
 A powerful, zero-dependency multi-purpose SDK client for interacting with Heavstal Tech API Utilities. Supports ESM and CJS.
