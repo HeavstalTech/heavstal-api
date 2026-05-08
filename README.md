@@ -1,11 +1,11 @@
 <div align="center">
   <img src="https://heavstal.com.ng/ht_icon.svg" width="120" alt="Heavstal Tech Logo" />
-  <h1>@heavstaltech/api</h1>
+  <h1>@heavstal/api</h1>
 
   <p>
-    <img alt="NPM Version" src="https://img.shields.io/npm/v/@heavstaltech/api?style=flat-square">
+    <img alt="NPM Version" src="https://img.shields.io/npm/v/@heavstal/api?style=flat-square">
     <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/HeavstalTech/heavstaltech-api/test.yml?style=flat-square&label=tests">
-    <img alt="License" src="https://img.shields.io/npm/l/@heavstaltech/api?style=flat-square">
+    <img alt="License" src="https://img.shields.io/npm/l/@heavstal/api?style=flat-square">
   </p>
 </div>
 
@@ -25,13 +25,13 @@ This module provides streamlined programmatic access to media parsing, search en
 Install via npm:
 
 ```bash
-npm install @heavstaltech/api
+npm install @heavstal/api
 ```
 
 Install via yarn:
 
 ```bash
-yarn add @heavstaltech/api
+yarn add @heavstal/api
 ```
 
 ---
@@ -66,18 +66,18 @@ This library is a hybrid module, meaning it seamlessly supports both **CommonJS 
 
 ### ES Modules / TypeScript (`import`)
 ```typescript
-import { downloader, search, tools } from '@heavstaltech/api';
+import { downloader, search, tools } from '@heavstal/api';
 
 // Or import specific standalone methods
-import { tiktok, apk, unzipToText } from '@heavstaltech/api';
+import { tiktok, apk, unzipToText } from '@heavstal/api';
 ```
 
 ### CommonJS (`require`)
 ```javascript
-const { downloader, search, tools } = require('@heavstaltech/api');
+const { downloader, search, tools } = require('@heavstal/api');
 
 // Or require specific standalone methods
-const { tiktok, apk, unzipToText } = require('@heavstaltech/api');
+const { tiktok, apk, unzipToText } = require('@heavstal/api');
 ```
 
 ---
