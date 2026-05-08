@@ -1,6 +1,6 @@
 {
-  "name": "@heavstaltech/api",
-  "version": "2.0.4",
+  "name": "@heavstal/api",
+  "version": "2.0.5",
   "description": "A powerful, zero-dependency multi-purpose sdk client for interacting with Heavstal Tech Api Utilities. Supports ESM and CJS.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -23,11 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/HeavstalTech/heavstaltech-api"
+    "url": "https://github.com/HeavstalTech/heavstal-api"
   },
  "homepage": "https://docs.heavstal.com.ng/modules/api",
  "bugs": {
- "url": "https://github.com/HeavstalTech/heavstaltech-api/issues"
+ "url": "https://github.com/HeavstalTech/heavstal-api/issues"
   },
   "keywords": [
     "api",
