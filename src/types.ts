@@ -135,3 +135,40 @@ export interface SentinelResult {
   verdict: string;
   analysis: string;
 }
+
+export interface Movie {
+  id: number;
+  title: string;
+  year: number;
+  rating: number;
+  genres: string[];
+  poster: string;
+  torrents?: any[]; 
+}
+
+export interface MoviesListResult {
+  author: Author;
+  status: boolean;
+  count: number;
+  page: number;
+  total?: number;
+  movies: Movie[];
+}
+
+export interface MovieGetResult {
+  author: Author;
+  status: boolean;
+  data: any; 
+}
+
+export interface DataArrayResult {
+  author: Author;
+  status: boolean;
+  data: any[];
+}
+
+export interface GenericDataResult {
+  author: Author;
+  status: boolean;
+  data: any;
+}
