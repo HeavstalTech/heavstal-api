@@ -6,7 +6,7 @@ if (majorVersion < 2) {
   console.error(`Please update to V2.x or higher to continue using this package.`);
   console.error(`Run: \x1b[36mnpm install @heavstaltech/api@latest\x1b[0m\n`);
   process.exit(1);
-}*/
+}
 
 /*
 // Migration Notice for Heavstal Api Sdk
