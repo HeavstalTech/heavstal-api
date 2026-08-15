@@ -1,3 +1,4 @@
+// test.js
 var api = require('./dist/index.js');
 
 async function runTest(name, testFn) {
@@ -180,7 +181,7 @@ async function main() {
 
   results.push(await runTest("Instagram: Downloader", async () => {
     try {
-        const res = await api.downloader.igdl("https://www.instagram.com/p/C-u1y_zSz_V/");
+        const res = await api.downloader.igdl("https://www.instagram.com/reel/DKxI3J6MOiE/?igsh=dm14bjgxdXM0dW94");
         return res.length > 0;
     } catch (e) {
         if(e.message.includes("403") || e.message.includes("Login") || e.message.includes("private")) {
@@ -193,7 +194,7 @@ async function main() {
 
   results.push(await runTest("Facebook: Downloader", async () => {
     try {
-       const res = await api.downloader.fbdl("https://fb.watch/testvideo/"); 
+       const res = await api.downloader.fbdl("https://www.facebook.com/reel/1591279615940401/"); 
        return res.length > 0;
     } catch (e) {
         console.log(`   (⚠️ FB Error: ${e.message})`);
