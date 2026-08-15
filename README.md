@@ -228,7 +228,230 @@ Analyze text to determine if it was AI-generated or human-written.
 const scan = await ai.sentinel("The quick brown fox jumps over the lazy dog.");
 console.log(`Score: ${scan.score}% | Verdict: ${scan.verdict}`);
 ```
+### 6. Movies 
 
+**Movies**
+Access a massive database of movies, including torrents, cast details, and images.
+```javascript
+// Get trending movies
+const hotMovies = await movies.trending(10); // Number = results per page (Max 50, Default 20).
+console.log(hotMovies.movies[0].title);
+
+// Get lastest movies
+const newMovies = await movies.latest(10); // Number = results per page (Max 50, Default 20).
+console.log(newMovies.movies[0].title);
+
+// Search movies
+const results = await movies.search({ query: "Inception", min_rating: 8.0 });
+
+// Get detailed movie info by ID
+const detail = await movies.get(11);
+```
+
+**Live Data & Web Scraping**
+```javascript
+// Hacker News Top 10
+const news = await search.hackerNews();
+
+// Live Crypto Prices
+const btc = await search.crypto(1, "BTC");
+console.log(btc.data[0].price_usd);
+
+// Smart Web Scraper (Extracts main content from websites)
+const article = await search.webSearch("https://example.com/blog", true); // true = summarize with AI
+```
+
+### 7. Security, Intelligence & Utilities
+
+Access a vast array of extra tools including IP locators, weather data, password generators, and URL metadata extraction.
+
+```javascript
+// Generate a secure 24-character password
+const pass = await tools.passwordGenerator({ length: 24, symbols: true });
+console.log(`Password: ${pass.data.password} | Entropy: ${pass.data.entropy_bits}`);
+```
+
+**GitHub Developer Info**
+Fetches the info of a GitHub user/dev
+```
+const dev = await search.github("vercel");
+console.log(`Followers: ${dev.data.followers} | Repos: ${dev.data.public_repos}`);
+```
+
+**Markdown to HTML**
+coverts Markdown code to html
+```javascript
+const html = await tools.markdownToHtml("# Hello **World**");
+```
+
+**Weather Forecast**
+Fetches the weather information of any city
+```javascript
+const weather = await search.weather("London");
+console.log(`Temp: ${weather.data.temp_c}°C | Condition: ${weather.data.condition}`);
+```
+
+**MediaFire Downloader**
+Bypasses the landing page and returns the raw file link.
+```javascript
+const file = await downloader.mediafire("https://www.mediafire.com/file/...");
+console.log(`Name: ${file.data.filename} | Link: ${file.data.link}`);
+```
+
+### 8. Search & Information
+
+**GitHub Developer Info**
+Fetch detailed developer profiles from GitHub.
+```javascript
+const dev = await search.github("torvalds");
+console.log(`Name: ${dev.data.name} | Repos: ${dev.data.public_repos}`);
+```
+
+**TikTok Profile Info**
+Retrieve public profile information, followers, and engagement stats.
+```javascript
+const profile = await search.tiktokInfo("khaby.lame");
+console.log(`Followers: ${profile.data.followers} | Bio: ${profile.data.description}`);
+```
+
+**Global Weather**
+Get real-time atmospheric data and forecasts for any city.
+```javascript
+const weather = await search.weather("Lagos");
+console.log(`Temp: ${weather.data.temp_c}°C | Condition: ${weather.data.condition}`);
+```
+
+**URL Metadata Fetcher**
+Extract Open Graph (OG) tags, titles, and descriptions from any website.
+```javascript
+const meta = await search.metadata("https://youtube.com/watch?v=dQw4w9WgXcQ");
+console.log(`Title: ${meta.data.title} | Image: ${meta.data.image}`);
+```
+
+### 9. Security & Cryptography
+
+**CODE-X Encryption**
+Enterprise-grade code obfuscation for JavaScript, Python, and Java.
+```javascript
+const obfuscated = await tools.codex("console.log('Secret');", "js");
+console.log(obfuscated.data.encrypted_code);
+```
+
+**Secure Password Generator**
+Generate cryptographically secure passwords with custom criteria.
+```javascript
+const pass = await tools.passwordGenerator({ 
+  length: 24, 
+  uppercase: true, 
+  numbers: true, 
+  symbols: true 
+});
+console.log(pass.data.password);
+```
+
+**Password Strength Auditor**
+Analyze password strength, crack time, and get security suggestions.
+```javascript
+const audit = await tools.passwordStrength("password123");
+console.log(`Score: ${audit.data.score}/4 | Time to crack: ${audit.data.crack_time}`);
+```
+
+### 10. Document & Text Utilities
+
+**Universal Document Extractor**
+Extract raw text from PDF, DOCX, TXT, and Code files via URL.
+```javascript
+const doc = await tools.docExtract("https://example.com/contract.pdf");
+console.log(doc.data.content);
+```
+
+**Markdown to HTML**
+Convert Markdown syntax into secure, sanitized HTML.
+```javascript
+const html = await tools.markdownToHtml("# Hello **World**");
+console.log(html.data.html); // <h1>Hello <strong>World</strong></h1>
+```
+
+**Universal Encoder (Base64/Base32)**
+Smart encoder/decoder. Automatically detects and hosts binary files on decode.
+```javascript
+const encoded = await tools.encoder("Heavstal Tech", "base64", "encode");
+console.log(encoded.data.output);
+```
+
+**Image to Text (OCR)**
+Extract text from images using advanced Optical Character Recognition.
+```javascript
+const ocr = await tools.ocr("https://example.com/image-with-text.jpg", "eng");
+console.log(ocr.data.text);
+```
+
+**Universal Translator**
+Auto-detects source language and translates text to English.
+```javascript
+const translation = await tools.translate("Bonjour tout le monde");
+console.log(translation.data.translated); // "Hello everyone"
+```
+
+### 11. Development & Network Utilities
+
+**Math Calculator**
+Evaluate complex mathematical expressions securely.
+```javascript
+const math = await tools.calc("sqrt(16) + 5^2");
+console.log(`Result: ${math.data.result}`); // "29"
+```
+
+**HTTP Status Checker**
+Check website uptime, latency, and status codes.
+```javascript
+const status = await tools.httpStatus("https://github.com");
+console.log(`Status: ${status.data.status} | Latency: ${status.data.latency}`);
+```
+
+**IP Geo-Locator**
+Get location, ISP, and timezone info for any IP or Domain.
+```javascript
+const ip = await tools.ipInfo("8.8.8.8");
+console.log(`City: ${ip.data.city}, ${ip.data.country} | ISP: ${ip.data.org}`);
+```
+
+**QR Code Generator**
+Create customizable QR codes and return a direct image link.
+```javascript
+const qr = await tools.qrcode("https://heavstal.com.ng", "#000000", "#ffffff");
+console.log(qr.data.link);
+```
+
+### 12. Fun, Games & Education
+
+**Academic Quiz Engine**
+Generate random multiple-choice questions for STEM subjects.
+```javascript
+const quiz = await tools.quiz("computer", 5); // Fetch 5 computer science questions
+console.log(quiz.data[0].question);
+```
+
+**Fun Facts**
+Get random, interesting facts from history, science, and nature.
+```javascript
+const fact = await tools.funfact();
+console.log(fact.data.fact);
+```
+
+**Religion (Bible/Quran)**
+Retrieve sacred texts, translations, and audio.
+```javascript
+const verse = await tools.religion("bible", "John 3:16", "kjv");
+console.log(verse.data.text);
+```
+
+**Truth or Dare**
+Get random Truth questions or Dare challenges with thematic images.
+```javascript
+const game = await tools.truthDare("dare");
+console.log(`Dare: ${game.data.result} | Image: ${game.data.image}`);
+```
 ---
 
 ## Heavstal Tech Ecosystem
