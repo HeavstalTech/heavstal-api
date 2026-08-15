@@ -1,10 +1,15 @@
+// src/types.ts
+export interface HeavstalConfig {
+  apiKey?: string;
+}
+
 export interface Author {
   name: string;
   source: string;
 }
 
 export const AUTHOR: Author = {
-  name: "HEAVSTAL TECH",
+  name: "Heavstal Tech",
   source: "https://heavstal.com.ng"
 };
 
@@ -107,6 +112,26 @@ export interface ApkResult {
   last_updated?: string;
 }
 
-export interface HeavstalConfig {
-  apiKey?: string;
+export interface AIResult {
+  author: Author;
+  status: boolean;
+  model: string;
+  response: string;
+}
+
+export interface ImageResult {
+  author: Author;
+  status: boolean;
+  prompt: string;
+  url: string;
+  model?: string;
+  note?: string;
+}
+
+export interface SentinelResult {
+  author: Author;
+  status: boolean;
+  score: number;
+  verdict: string;
+  analysis: string;
 }
