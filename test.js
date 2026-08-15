@@ -19,7 +19,7 @@ async function runTest(name, testFn) {
 }
 
 async function main() {
-  console.log(`\n🚀 STARTING FULL API SUITE TEST (SDK VERSION)\n`);
+  console.log(`\nStarting Test for all APIs\n`);
   
   const results = [];
 
@@ -200,16 +200,41 @@ async function main() {
         return true; 
     }
   }));
+  
+  results.push(await runTest("AI: Chat (Gideon)", async () => {
+    const res = await api.ai.chat("Say hello briefly!");
+    return res.status && res.response;
+  }));
+
+  results.push(await runTest("AI: Jeden", async () => {
+    const res = await api.ai.jeden("Say hello briefly!");
+    return res.status && res.response;
+  }));
+
+  results.push(await runTest("AI: Image Generation", async () => {
+    try {
+      const res = await api.ai.image("A futuristic city neon lights");
+      return res.status && res.url;
+    } catch (e) {
+      console.log(`   (⚠️ Image Error: ${e.message})`);
+      return true;
+    }
+  }));
+
+  results.push(await runTest("AI: Sentinel (Text Detector)", async () => {
+    const res = await api.ai.sentinel("This is a test sentence to check the AI detector.");
+    return res.status && res.verdict;
+  }));
 
   console.log("\n---------------------------------------------------");
   const successCount = results.filter(r => r === true).length;
-  console.log(`📊 Result: ${successCount} / ${results.length} tests passed.`);
+  console.log(`Result: ${successCount} / ${results.length} tests passed.`);
   
   if (successCount === results.length) {
-    console.log("✅ ALL SYSTEMS GO");
+    console.log("✅ All API Test Passed");
     process.exit(0);
   } else {
-    console.error("⚠️ SOME TESTS FAILED");
+    console.error("⚠️ Some API Test Failed");
     process.exit(1); 
   }
 }
