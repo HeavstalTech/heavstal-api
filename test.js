@@ -276,19 +276,16 @@ async function main() {
     return res.status && res.data.name === "Linus Torvalds";
   }));
   
-  // --- DOWNLOADERS ---
   results.push(await runTest("Downloader: MediaFire", async () => {
     try {
-      // Using a random placeholder/dummy url, testing for correct API handling
       const res = await api.downloader.mediafire("https://www.mediafire.com/file/vruwtdxxz3kuxq9/example.zip/file");
       return res.status && res.data.link;
     } catch (e) {
       console.log(`   (⚠️ MediaFire Error: ${e.message})`);
-      return true; // Soft pass if MediaFire blocks the CI IP
+      return true;
     }
   }));
 
-  // --- SEARCH & INFO ---
   results.push(await runTest("Search: GitHub Info", async () => {
     const res = await api.search.github("torvalds");
     return res.status && res.data.name === "Linus Torvalds";
@@ -300,7 +297,7 @@ async function main() {
       return res.status && res.data.followers !== undefined;
     } catch (e) {
       console.log(`   (⚠️ TikTok Info Error: ${e.message})`);
-      return true; // Soft pass if TikTok blocks the CI IP
+      return true; 
     }
   }));
 
@@ -314,7 +311,6 @@ async function main() {
     return res.status && res.data.title !== undefined;
   }));
 
-  // --- TOOLS & UTILITIES ---
   results.push(await runTest("Tools: Math Calculator", async () => {
     const res = await api.tools.calc("sqrt(16) + 5^2");
     return res.status && res.data.result === "29";
@@ -337,7 +333,6 @@ async function main() {
 
   results.push(await runTest("Tools: Universal Encoder", async () => {
     const res = await api.tools.encoder("Heavstal", "base64", "encode");
-    // "Heavstal" in base64 is SGVhdnN0YWw=
     return res.status && res.data.output === "SGVhdnN0YWw=";
   }));
 
@@ -363,7 +358,7 @@ async function main() {
 
   results.push(await runTest("Tools: OCR (Image to Text)", async () => {
     try {
-      const res = await api.tools.ocr("https://upload.wikimedia.org/wikipedia/commons/a/a4/Text_example.png");
+      const res = await api.tools.ocr("https://i.ibb.co/ZRJT9S45/Screenshot-20260815-140603.png");
       return res.status && res.data.text !== undefined;
     } catch (e) {
       console.log(`   (⚠️ OCR Error: ${e.message})`);
