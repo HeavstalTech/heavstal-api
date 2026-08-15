@@ -1,4 +1,4 @@
-/*import { version } from '../package.json';
+import { version } from '../package.json';
 const majorVersion = parseInt(version.split('.')[0], 10);
 if (majorVersion < 2) {
   console.error(`\x1b[33mnpm WARN deprecated\x1b[0m @heavstaltech/api@${version}`);
@@ -20,18 +20,22 @@ if (process.env.NODE_ENV !== 'production' || typeof window === 'undefined') {
     "\nVisit: https://www.npmjs.com/package/@heavstal/api\n"
   );
 }
-*/
 
 import { tiktok, tiktokSlide } from './dl/tiktok';
 import { igdl, fbdl } from './dl/social';
 import { twitter } from './dl/twitter';
 import { search as ytSearch, ytmp3, ytmp4, play } from './dl/youtube';
 import { ssweb, styleText, wattpad, chords, morse, tts } from './utils/tools';
+import { hackerNews, crypto, webSearch } from './search/data'; 
+import { github, tiktokInfo, weather, metadata } from './search/misc';
 import { ephoto } from './utils/maker';
 import { lyrics } from './search/lyrics';
 import { unzipToText } from './utils/zipper';
 import { apk } from './search/apk'; 
+import { mediafire } from './dl/mediafire';
+import * as extraTools from './utils/extra';
 import * as aiModule from './ai/index';
+import * as moviesModule from './movies/index';
 
 export * from './types';
 
@@ -55,7 +59,10 @@ export {
   morse,
   tts,
   ephoto,
-  lyrics
+  lyrics,
+  hackerNews,
+  crypto,
+  webSearch
 };
 
 export const downloader = {
@@ -67,7 +74,8 @@ export const downloader = {
   xdl: twitter,
   ytmp3,
   ytmp4,
-  play
+  play,
+  mediafire
 };
 
 export const search = {
@@ -75,7 +83,14 @@ export const search = {
   wattpad,
   chords,
   lyrics,
-  apk
+  apk,
+  hackerNews, 
+  crypto,   
+  webSearch,
+  github, 
+  tiktokInfo,
+  weather, 
+  metadata 
 };
 
 export const tools = {
@@ -85,14 +100,17 @@ export const tools = {
   styleText,
   morse,
   tts,
-  ephoto
+  ephoto,
+  ...extraTools
 };
 
 export const ai = aiModule;
+export const movies = moviesModule;
 
 export default {
   downloader,
   search,
   tools,
-  ai
+  ai,
+  movies
 };
