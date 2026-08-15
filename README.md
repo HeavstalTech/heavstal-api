@@ -202,6 +202,33 @@ const fonts = await tools.styleText("Heavstal Tech");
 const morseStr = await tools.morse("HELLO", "encode"); // Output: .... . .-.. .-.. ---
 ```
 
+### 5. AI Tools
+
+**Conversational AI**
+Access Heavstal's customized LLM engines. Inject personas for dynamic responses.
+```javascript
+// AI ChatBots
+const chat = await ai.chat("Explain quantum physics like I'm 5", "A friendly wizard");
+console.log(chat.response);
+
+const data = await ai.jeden("Write a haiku about code");
+console.log(data.response);
+```
+
+**AI Image Generation**
+Generate images using high-speed latent diffusion models.
+```javascript
+const img = await ai.image("A cyberpunk city in rain, neon lights");
+console.log(img.url); // Returns hosted catbox link
+```
+
+**Sentinel (AI Text Detector)**
+Analyze text to determine if it was AI-generated or human-written.
+```javascript
+const scan = await ai.sentinel("The quick brown fox jumps over the lazy dog.");
+console.log(`Score: ${scan.score}% | Verdict: ${scan.verdict}`);
+```
+
 ---
 
 ## Heavstal Tech Ecosystem
