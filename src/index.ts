@@ -1,4 +1,4 @@
-import { version } from '../package.json';
+/*import { version } from '../package.json';
 const majorVersion = parseInt(version.split('.')[0], 10);
 if (majorVersion < 2) {
   console.error(`\x1b[33mnpm WARN deprecated\x1b[0m @heavstaltech/api@${version}`);
@@ -6,7 +6,7 @@ if (majorVersion < 2) {
   console.error(`Please update to V2.x or higher to continue using this package.`);
   console.error(`Run: \x1b[36mnpm install @heavstaltech/api@latest\x1b[0m\n`);
   process.exit(1);
-}
+}*/
 
 /*
 // Migration Notice for Heavstal Api Sdk
@@ -31,6 +31,7 @@ import { ephoto } from './utils/maker';
 import { lyrics } from './search/lyrics';
 import { unzipToText } from './utils/zipper';
 import { apk } from './search/apk'; 
+import * as aiModule from './ai/index';
 
 export * from './types';
 
@@ -87,8 +88,11 @@ export const tools = {
   ephoto
 };
 
+export const ai = aiModule;
+
 export default {
   downloader,
   search,
-  tools
+  tools,
+  ai
 };
