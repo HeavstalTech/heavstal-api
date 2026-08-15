@@ -70,7 +70,7 @@ async function main() {
   
   results.push(await runTest("Twitter: Downloader", async () => {
     try {
-        const res = await api.downloader.twitter("https://x.com/elonmusk/status/2009777814459781422"); 
+        const res = await api.downloader.twitter("https://x.com/Replay_remix/status/2088115156895113238?s=20"); 
         return res.status && (res.video_sd || res.video_hd);
     } catch (e) {
         console.log(`   (⚠️ Twitter Error: ${e.message})`);
@@ -201,7 +201,7 @@ async function main() {
     }
   }));
   
-  results.push(await runTest("AI: Chat (Gideon)", async () => {
+  results.push(await runTest("AI: Chat", async () => {
     const res = await api.ai.chat("Say hello briefly!");
     return res.status && res.response;
   }));
@@ -278,7 +278,7 @@ async function main() {
   
   results.push(await runTest("Downloader: MediaFire", async () => {
     try {
-      const res = await api.downloader.mediafire("https://www.mediafire.com/file/vruwtdxxz3kuxq9/example.zip/file");
+      const res = await api.downloader.mediafire("https://www.mediafire.com/file/hhezkd9vaum9b2v/termux-about.log/file");
       return res.status && res.data.link;
     } catch (e) {
       console.log(`   (⚠️ MediaFire Error: ${e.message})`);
@@ -302,7 +302,7 @@ async function main() {
   }));
 
   results.push(await runTest("Search: Weather", async () => {
-    const res = await api.search.weather("Lagos");
+    const res = await api.search.weather("Lekki");
     return res.status && res.data.temp_c !== undefined;
   }));
 
@@ -347,23 +347,8 @@ async function main() {
   }));
 
   results.push(await runTest("Tools: IP Geo-Locator", async () => {
-    const res = await api.tools.ipInfo("8.8.8.8");
+    const res = await api.tools.ipInfo("142.250.65.78");
     return res.status && res.data.org.includes("Google");
-  }));
-
-  results.push(await runTest("Tools: Markdown to HTML", async () => {
-    const res = await api.tools.markdownToHtml("**Heavstal**");
-    return res.status && res.data.html.includes("<strong>Heavstal</strong>");
-  }));
-
-  results.push(await runTest("Tools: OCR (Image to Text)", async () => {
-    try {
-      const res = await api.tools.ocr("https://i.ibb.co/ZRJT9S45/Screenshot-20260815-140603.png");
-      return res.status && res.data.text !== undefined;
-    } catch (e) {
-      console.log(`   (⚠️ OCR Error: ${e.message})`);
-      return true;
-    }
   }));
 
   results.push(await runTest("Tools: Password Generator", async () => {
@@ -405,6 +390,22 @@ async function main() {
     const res = await api.tools.truthDare("truth");
     return res.status && res.data.result && res.data.image;
   }));
+  
+  results.push(await runTest("Tools: Markdown to HTML", async () => {
+    const res = await api.tools.markdownToHtml("**Heavstal**");
+    return res.status && res.data.html.includes("<strong>Heavstal</strong>");
+  }));
+  
+  results.push(await runTest("Tools: OCR (Image to Text)", async () => {
+    try {
+      const res = await api.tools.ocr("https://i.ibb.co/ZRJT9S45/Screenshot-20260815-140603.png");
+      return res.status && res.data.text !== undefined;
+    } catch (e) {
+      console.log(`   (⚠️ OCR Error: ${e.message})`);
+      return true;
+    }
+  }));
+  
 
   console.log("\n---------------------------------------------------");
   const successCount = results.filter(r => r === true).length;
