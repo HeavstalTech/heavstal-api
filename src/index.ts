@@ -8,8 +8,7 @@ if (majorVersion < 2) {
   process.exit(1);
 }
 
-/*
-// Migration Notice for Heavstal Api Sdk
+/* // Migration Notice for Heavstal Api Sdk
 if (process.env.NODE_ENV !== 'production' || typeof window === 'undefined') {
   console.warn(
     "\x1b[33m%s\x1b[0m",
@@ -19,7 +18,7 @@ if (process.env.NODE_ENV !== 'production' || typeof window === 'undefined') {
     "\n\nRun: npm install @heavstal/api",
     "\nVisit: https://www.npmjs.com/package/@heavstal/api\n"
   );
-}
+} */
 
 import { tiktok, tiktokSlide } from './dl/tiktok';
 import { igdl, fbdl } from './dl/social';
