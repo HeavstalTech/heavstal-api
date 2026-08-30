@@ -35,6 +35,7 @@ import { mediafire } from './dl/mediafire';
 import * as extraTools from './utils/extra';
 import * as aiModule from './ai/index';
 import * as moviesModule from './movies/index';
+import * as tvModule from './tv/index';
 
 export * from './types';
 
@@ -105,11 +106,13 @@ export const tools = {
 
 export const ai = aiModule;
 export const movies = moviesModule;
+export const tv = tvModule;
 
 export default {
   downloader,
   search,
   tools,
   ai,
-  movies
+  movies,
+  tv
 };
