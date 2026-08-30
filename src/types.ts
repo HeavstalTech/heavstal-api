@@ -172,3 +172,35 @@ export interface GenericDataResult {
   status: boolean;
   data: any;
 }
+
+export interface TVShow {
+  id: number;
+  name: string;
+  status: string;
+  genres: string[];
+  rating: number;
+  image: string | null;
+  summary: string;
+}
+
+export interface TVSearchResult {
+  author: Author;
+  status: boolean;
+  count: number;
+  shows: TVShow[];
+}
+
+export interface TVGetResult {
+  author: Author;
+  status: boolean;
+  data: any; 
+}
+
+export interface TVScheduleResult {
+  author: Author;
+  status: boolean;
+  country: string;
+  date: string;
+  count: number;
+  schedule: any[];
+}
