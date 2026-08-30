@@ -166,7 +166,7 @@ async function main() {
   }
 
   results.push(await runTest("TikTok: Search/DL", async () => {
-    const res = await api.downloader.tiktok("funny cat");
+    const res = await api.downloader.tiktok("https://vt.tiktok.com/ZSVtJXW3y/");
     return res.status && res.no_watermark;
   }));
 
