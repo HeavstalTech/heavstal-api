@@ -172,7 +172,8 @@ async function main() {
 
   results.push(await runTest("TikTok: Slide", async () => {
     try {
-        const res = await api.downloader.tiktokSlide("https://vt.tiktok.com/ZS9grRxXX/");
+       // const res = await api.downloader.tiktokSlide("https://vt.tiktok.com/ZS9grRxXX/");
+      const res = await api.downloader.tiktokSlide("https://vt.tiktok.com/ZS4MWAGD9/");
         return true; 
     } catch (e) {
         return false;
