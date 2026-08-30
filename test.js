@@ -237,6 +237,21 @@ async function main() {
     return res.status && res.data.title === "13 Eerie";
   }));
 
+  results.push(await runTest("TV: Search", async () => {
+    const res = await api.tv.search("Breaking Bad");
+    return res.status && res.shows.length > 0;
+  }));
+
+  results.push(await runTest("TV: Get", async () => {
+    const res = await api.tv.get(169);
+    return res.status && res.data.name === "Breaking Bad" && res.data.episodes.length > 0;
+  }));
+
+  results.push(await runTest("TV: Schedule", async () => {
+    const res = await api.tv.schedule("US");
+    return res.status && res.schedule !== undefined;
+  }));
+
   results.push(await runTest("Search: Hacker News", async () => {
     const res = await api.search.hackerNews();
     return res.status && res.data.length > 0;
