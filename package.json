@@ -19,6 +19,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "node test/test.js",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "repository": {
