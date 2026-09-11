@@ -32,6 +32,7 @@ import { lyrics } from './search/lyrics';
 import { unzipToText } from './utils/zipper';
 import { apk } from './search/apk'; 
 import { mediafire } from './dl/mediafire';
+import { web2apk } from './tools/index';
 import * as extraTools from './utils/extra';
 import * as aiModule from './ai/index';
 import * as moviesModule from './movies/index';
@@ -62,7 +63,8 @@ export {
   lyrics,
   hackerNews,
   crypto,
-  webSearch
+  webSearch,
+  web2apk
 };
 
 export const downloader = {
@@ -101,6 +103,7 @@ export const tools = {
   morse,
   tts,
   ephoto,
+  web2apk,
   ...extraTools
 };
 
