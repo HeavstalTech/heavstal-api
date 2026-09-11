@@ -204,3 +204,18 @@ export interface TVScheduleResult {
   count: number;
   schedule: any[];
 }
+
+export interface Web2ApkResult {
+  author: Author;
+  status: boolean;
+  app_name: string;
+  package_name: string;
+  version: string;
+  apk_url: string;
+}
+
+export interface Web2ApkOptions {
+  package_name?: string;
+  version_name?: string;
+  version_code?: number;
+}
