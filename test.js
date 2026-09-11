@@ -308,6 +308,20 @@ async function main() {
     return res.status && res.data.name === "Linus Torvalds";
   }));
 
+  results.push(await runTest("Tools: Web to APK", async () => {
+    try {
+      const res = await api.tools.web2apk(
+          "https://example.com", 
+          "Example App", 
+          "https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Chrome_icon_%28September_2014%29.svg"
+      );
+      return res.status && res.apk_url && res.apk_url.startsWith("http");
+    } catch (e) {
+      console.log(`   (⚠️ Web2Apk Error: ${e.message})`);
+      return false;
+    }
+  }));
+
   results.push(await runTest("Search: TikTok Info", async () => {
     try {
       const res = await api.search.tiktokInfo("khaby.lame");
