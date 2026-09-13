@@ -213,6 +213,16 @@ async function main() {
     return res.status && res.response;
   }));
 
+  results.push(await runTest("AI: Background Remover", async () => {
+    try {
+      const res = await api.ai.removeBg("https://files.catbox.moe/0q15bj.jpg");
+      return res.status && res.url && res.url.startsWith("http");
+    } catch (e) {
+      console.log(`   (⚠️ Remove-BG Error: ${e.message})`);
+      return false; 
+    }
+  }));
+
   results.push(await runTest("AI: Image Generation", async () => {
     try {
       const res = await api.ai.image("A futuristic city neon lights");
