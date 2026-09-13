@@ -33,6 +33,7 @@ import { unzipToText } from './utils/zipper';
 import { apk } from './search/apk'; 
 import { mediafire } from './dl/mediafire';
 import { web2apk } from './tools/index';
+import { removeBg } from './ai/removebg';
 import * as extraTools from './utils/extra';
 import * as aiModule from './ai/index';
 import * as moviesModule from './movies/index';
@@ -64,7 +65,8 @@ export {
   hackerNews,
   crypto,
   webSearch,
-  web2apk
+  web2apk,
+  removeBg
 };
 
 export const downloader = {
@@ -107,7 +109,10 @@ export const tools = {
   ...extraTools
 };
 
-export const ai = aiModule;
+export const ai = {
+  ...aiModule,
+  removeBg
+}
 export const movies = moviesModule;
 export const tv = tvModule;
 
