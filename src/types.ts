@@ -219,3 +219,10 @@ export interface Web2ApkOptions {
   version_name?: string;
   version_code?: number;
 }
+
+export interface RemoveBgResult {
+  author: Author;
+  status: boolean;
+  original_url: string;
+  url: string;
+}
